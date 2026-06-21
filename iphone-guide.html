@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>苹果手机使用教程</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --ink: #17191f;
+      --muted: #68707f;
+      --line: #e4e7ec;
+      --brand: #0f62fe;
+      --brand-dark: #0847bd;
+      --soft: #eaf2ff;
+      --green: #0f7b47;
+      --yellow: #8a5b00;
+      --shadow: 0 18px 45px rgba(20, 28, 45, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(228, 231, 236, 0.85);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+    }
+
+    .topbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 750;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(145deg, #14171f, #3c4351);
+      box-shadow: inset 0 -6px 12px rgba(255, 255, 255, 0.12);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    nav a {
+      padding: 8px 11px;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      color: var(--brand-dark);
+      background: var(--soft);
+    }
+
+    .hero {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 62px 22px 34px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 34px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--brand-dark);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 780px;
+      font-size: clamp(36px, 6vw, 68px);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      margin: 20px 0 0;
+      max-width: 670px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: white;
+      font-weight: 700;
+    }
+
+    .button.primary {
+      border-color: var(--brand);
+      color: white;
+      background: var(--brand);
+    }
+
+    .phone-demo {
+      width: min(100%, 360px);
+      margin: 0 auto;
+      padding: 14px;
+      border-radius: 36px;
+      background: #191b22;
+      box-shadow: var(--shadow);
+    }
+
+    .phone-screen {
+      min-height: 610px;
+      border-radius: 26px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 70% 8%, rgba(255, 255, 255, 0.95), transparent 18%),
+        linear-gradient(155deg, #d9ecff 0%, #bcd4ff 45%, #f6d6df 100%);
+      position: relative;
+      padding: 42px 18px 18px;
+    }
+
+    .notch {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      width: 92px;
+      height: 26px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: #11131a;
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      color: #11131a;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .widget {
+      margin-top: 28px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 10px 25px rgba(39, 54, 88, 0.10);
+    }
+
+    .widget strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-top: 28px;
+    }
+
+    .app {
+      display: grid;
+      justify-items: center;
+      gap: 6px;
+      color: #1a1d25;
+      font-size: 12px;
+      font-weight: 650;
+      text-align: center;
+    }
+
+    .app-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 22px;
+      font-weight: 750;
+      background: var(--brand);
+      box-shadow: 0 9px 18px rgba(42, 76, 125, 0.18);
+    }
+
+    .dock {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      padding: 12px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(14px);
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 8px 22px 64px;
+    }
+
+    section {
+      scroll-margin-top: 82px;
+      margin-top: 42px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .section-head p {
+      margin: 8px 0 0;
+      max-width: 680px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 20px;
+      box-shadow: 0 10px 28px rgba(20, 28, 45, 0.04);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 19px;
+      line-height: 1.3;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+    }
+
+    .card p {
+      margin: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 9px;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      color: var(--brand-dark);
+      background: var(--soft);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    ol,
+    ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    li + li {
+      margin-top: 7px;
+    }
+
+    .steps {
+      counter-reset: step;
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .step::before {
+      content: counter(step);
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: var(--brand);
+      font-weight: 800;
+    }
+
+    .step h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .tip {
+      border-left: 4px solid var(--green);
+      background: #effaf4;
+    }
+
+    .warning {
+      border-left: 4px solid var(--yellow);
+      background: #fff7e5;
+    }
+
+    .compare {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .compare th,
+    .compare td {
+      padding: 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .compare th {
+      background: #f0f4fb;
+      font-size: 14px;
+    }
+
+    .compare td {
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 44px;
+      padding: 24px;
+      border-radius: 8px;
+      color: white;
+      background: linear-gradient(135deg, #151a24, #283244);
+    }
+
+    .footer h2 {
+      font-size: 24px;
+    }
+
+    .footer p {
+      color: rgba(255, 255, 255, 0.78);
+      margin: 8px 0 0;
+    }
+
+    @media (max-width: 860px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 42px;
+      }
+
+      .grid,
+      .grid.two {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .topbar-inner,
+      .hero,
+      main {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .phone-screen {
+        min-height: 560px;
+      }
+
+      .app-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 11px;
+      }
+
+      .compare {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="logo" href="#top" aria-label="返回顶部">
+        <span class="logo-mark">i</span>
+        <span>苹果手机使用教程</span>
+      </a>
+      <nav aria-label="页面导航">
+        <a href="#start">快速上手</a>
+        <a href="#gestures">手势操作</a>
+        <a href="#settings">基础设置</a>
+        <a href="#apps">常用功能</a>
+        <a href="#privacy">隐私安全</a>
+        <a href="#faq">常见问题</a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="top" class="hero">
+    <div>
+      <p class="eyebrow">适合新 iPhone 用户和长辈学习</p>
+      <h1>从开机到熟练使用，一页学会苹果手机。</h1>
+      <p>
+        这份教程按真实使用顺序整理：激活手机、连接网络、学会手势、
+        设置 Apple ID、安装应用、拍照、备份、隐私保护和常见故障处理。
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="#start">开始学习</a>
+        <a class="button" href="#faq">查看常见问题</a>
+      </div>
+    </div>
+
+    <aside class="phone-demo" aria-label="iPhone 首页示意图">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="status">
+          <span>9:41</span>
+          <span>5G 100%</span>
+        </div>
+        <div class="widget">
+          <span>今天建议</span>
+          <strong>先学会 5 个手势</strong>
+          <p>返回主屏幕、切换应用、打开控制中心、搜索、长按菜单。</p>
+        </div>
+        <div class="app-grid">
+          <div class="app"><span class="app-icon" style="background:#31a24c">电</span>电话</div>
+          <div class="app"><span class="app-icon" style="background:#007aff">信</span>信息</div>
+          <div class="app"><span class="app-icon" style="background:#ff9500">照</span>照片</div>
+          <div class="app"><span class="app-icon" style="background:#5856d6">店</span>App Store</div>
+          <div class="app"><span class="app-icon" style="background:#1c1c1e">相</span>相机</div>
+          <div class="app"><span class="app-icon" style="background:#34c759">微</span>微信</div>
+          <div class="app"><span class="app-icon" style="background:#ff3b30">图</span>地图</div>
+          <div class="app"><span class="app-icon" style="background:#5ac8fa">设</span>设置</div>
+        </div>
+        <div class="dock" aria-label="底部程序坞">
+          <div class="app-icon" style="background:#31a24c">☎</div>
+          <div class="app-icon" style="background:#007aff">✉</div>
+          <div class="app-icon" style="background:#ff9500">◎</div>
+          <div class="app-icon" style="background:#1c1c1e">⌘</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <main>
+    <section id="start">
+      <div class="section-head">
+        <div>
+          <h2>快速上手</h2>
+          <p>新手机第一次使用时，按下面顺序完成即可。已经激活过的手机也可以跳过前两步。</p>
+        </div>
+      </div>
+      <div class="steps">
+        <article class="step">
+          <div>
+            <h3>长按侧边按钮开机</h3>
+            <p>看到苹果标志后松手。若没反应，先充电 15 分钟再试。</p>
+          </div>
+        </article>
+        <article class="step">
+          <div>
+            <h3>选择语言、地区和无线网络</h3>
+            <p>建议选择“简体中文”和“中国大陆”，连接家里的 Wi-Fi，后续下载应用会更稳定。</p>
+          </div>
+        </article>
+        <article class="step">
+          <div>
+            <h3>登录或创建 Apple ID</h3>
+            <p>Apple ID 用于下载应用、同步照片、备份通讯录。请记住账号、密码和绑定手机号。</p>
+          </div>
+        </article>
+        <article class="step">
+          <div>
+            <h3>设置 Face ID 和锁屏密码</h3>
+            <p>Face ID 用脸解锁，锁屏密码是备用钥匙。密码不要设置成生日或连续数字。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="gestures">
+      <div class="section-head">
+        <div>
+          <h2>手势操作</h2>
+          <p>没有实体 Home 键的 iPhone 主要靠手势操作。先掌握这些，日常使用会顺很多。</p>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <span class="badge">返回主屏幕</span>
+          <h3>从屏幕底部向上轻扫</h3>
+          <p>打开任何应用时，从最底部的小横条向上滑，就能回到桌面。</p>
+        </article>
+        <article class="card">
+          <span class="badge">切换应用</span>
+          <h3>向上滑并停一下</h3>
+          <p>出现应用卡片后，左右滑动选择应用。把卡片向上滑可以关闭应用。</p>
+        </article>
+        <article class="card">
+          <span class="badge">控制中心</span>
+          <h3>从右上角向下滑</h3>
+          <p>可快速开关 Wi-Fi、蓝牙、手电筒、亮度、音量和录屏。</p>
+        </article>
+        <article class="card">
+          <span class="badge">通知中心</span>
+          <h3>从顶部中间向下滑</h3>
+          <p>查看短信、微信提醒、日历事项。左滑通知可清除或管理提醒。</p>
+        </article>
+        <article class="card">
+          <span class="badge">全局搜索</span>
+          <h3>桌面中间向下滑</h3>
+          <p>输入应用名、联系人、设置项或网页关键词，能快速找到要打开的内容。</p>
+        </article>
+        <article class="card">
+          <span class="badge">长按菜单</span>
+          <h3>按住图标或文字不放</h3>
+          <p>常用于复制文字、保存图片、移动应用、卸载应用或打开快捷操作。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="settings">
+      <div class="section-head">
+        <div>
+          <h2>基础设置</h2>
+          <p>这些设置能明显改善使用体验，适合新机设置完成后一次性检查。</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <article class="card">
+          <h3>连接网络</h3>
+          <ul>
+            <li>打开“设置”里的“无线局域网”，选择家里的 Wi-Fi 并输入密码。</li>
+            <li>打开“蜂窝网络”，确认手机号卡已启用，外出时可使用流量。</li>
+            <li>如果网速异常，先开关一次“飞行模式”，再重连网络。</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>调整显示和文字</h3>
+          <ul>
+            <li>进入“设置 > 显示与亮度”，打开“自动亮度”可省电。</li>
+            <li>进入“设置 > 显示与亮度 > 文字大小”，调到看得舒服。</li>
+            <li>夜间可打开“夜览”，屏幕颜色更温和。</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>设置铃声和提醒</h3>
+          <ul>
+            <li>进入“设置 > 声音与触感”，调整铃声和提醒音量。</li>
+            <li>侧边静音开关拨到橙色时，手机会静音。</li>
+            <li>重要联系人可单独设置来电铃声，避免错过电话。</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>管理桌面应用</h3>
+          <ul>
+            <li>长按应用图标，可移动、删除或编辑主屏幕。</li>
+            <li>把一个图标拖到另一个图标上，可以创建文件夹。</li>
+            <li>不常用应用可移到“App 资源库”，桌面会更清爽。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="apps">
+      <div class="section-head">
+        <div>
+          <h2>常用功能</h2>
+          <p>下面是日常最常用的 iPhone 功能，照着路径操作即可。</p>
+        </div>
+      </div>
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>功能</th>
+            <th>怎么用</th>
+            <th>实用建议</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>下载应用</td>
+            <td>打开 App Store，搜索应用名称，点“获取”或价格按钮。</td>
+            <td>只从 App Store 下载应用，避免安装不明来源软件。</td>
+          </tr>
+          <tr>
+            <td>拍照录像</td>
+            <td>打开相机，左右滑动选择照片、人像、视频等模式。</td>
+            <td>按住快门可快速录像，录像时点白色按钮可同时拍照。</td>
+          </tr>
+          <tr>
+            <td>截图</td>
+            <td>同时按侧边按钮和音量上键，屏幕闪一下即完成。</td>
+            <td>截图后点左下角缩略图，可裁剪、标注或分享。</td>
+          </tr>
+          <tr>
+            <td>隔空投送</td>
+            <td>分享照片或文件时选择“隔空投送”，再点附近的苹果设备。</td>
+            <td>在控制中心长按网络区域，可设置“仅限联系人”或“所有人 10 分钟”。</td>
+          </tr>
+          <tr>
+            <td>备份资料</td>
+            <td>进入“设置 > 你的姓名 > iCloud > iCloud 云备份”。</td>
+            <td>建议保持云备份开启，换手机或丢手机时更容易恢复数据。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="privacy">
+      <div class="section-head">
+        <div>
+          <h2>隐私安全</h2>
+          <p>手机里有照片、通讯录、支付和聊天记录，安全设置值得认真做。</p>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card tip">
+          <h3>开启“查找”</h3>
+          <p>进入“设置 > 你的姓名 > 查找”，打开“查找我的 iPhone”。手机丢失时可定位、播放声音或远程抹掉。</p>
+        </article>
+        <article class="card">
+          <h3>检查应用权限</h3>
+          <p>进入“设置 > 隐私与安全性”，定期查看定位、相机、麦克风、照片权限，不需要的就关闭。</p>
+        </article>
+        <article class="card warning">
+          <h3>警惕验证码和共享屏幕</h3>
+          <p>不要把短信验证码、Apple ID 密码告诉别人。接到自称客服要求共享屏幕或转账时，先挂断核实。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="section-head">
+        <div>
+          <h2>常见问题</h2>
+          <p>遇到小故障时，先试这些方法，很多问题不需要去维修店。</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <article class="card">
+          <h3>手机卡住了怎么办？</h3>
+          <p>先尝试锁屏再解锁。若无反应，快速按一下音量上键、快速按一下音量下键，然后长按侧边按钮直到出现苹果标志。</p>
+        </article>
+        <article class="card">
+          <h3>忘记 Apple ID 密码怎么办？</h3>
+          <p>在登录页面点“忘记密码”，按提示用手机号或受信任设备重设。不要找陌生人代解锁。</p>
+        </article>
+        <article class="card">
+          <h3>存储空间满了怎么办？</h3>
+          <p>进入“设置 > 通用 > iPhone 储存空间”，删除不用的应用、清理大视频，或打开 iCloud 照片优化储存空间。</p>
+        </article>
+        <article class="card">
+          <h3>电池不耐用怎么办？</h3>
+          <p>降低屏幕亮度，关闭不必要的定位和后台刷新。进入“设置 > 电池”可查看耗电最多的应用。</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="footer">
+      <h2>学习建议</h2>
+      <p>
+        第一天先练手势和电话微信，第二天学拍照、截图、下载应用，第三天检查备份和隐私。
+        不用一次记住全部功能，常用的动作重复几次就会变自然。
+      </p>
+    </div>
+  </main>
+</body>
+</html>
