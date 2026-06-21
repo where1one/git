@@ -1,60 +1,146 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>苹果手机使用教程</title>
+  <meta name="description" content="从开机到熟练使用，一页学会苹果手机。适合新 iPhone 用户和长辈学习的完整教程。">
+  <title>苹果手机使用教程 — 从入门到熟练</title>
   <style>
+    /* ============================================
+       CSS 变量 — 亮色 / 暗色双主题
+       ============================================ */
     :root {
       color-scheme: light;
       --bg: #f6f7f9;
       --panel: #ffffff;
       --ink: #17191f;
+      --ink-2: #2d313a;
       --muted: #68707f;
+      --muted-2: #8b919e;
       --line: #e4e7ec;
+      --line-2: #dce0e8;
       --brand: #0f62fe;
+      --brand-hover: #0a51d4;
       --brand-dark: #0847bd;
       --soft: #eaf2ff;
+      --soft-2: #d6e4ff;
       --green: #0f7b47;
+      --green-bg: #effaf4;
       --yellow: #8a5b00;
-      --shadow: 0 18px 45px rgba(20, 28, 45, 0.10);
+      --yellow-bg: #fff7e5;
+      --red: #d92d20;
+      --red-bg: #fef3f2;
+      --shadow-sm: 0 1px 3px rgba(20,28,45,0.06);
+      --shadow: 0 10px 28px rgba(20,28,45,0.07);
+      --shadow-lg: 0 18px 45px rgba(20,28,45,0.10);
+      --radius: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --transition: 0.22s cubic-bezier(0.25, 0, 0.25, 1);
     }
 
-    * {
-      box-sizing: border-box;
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #13161c;
+      --panel: #1c1f27;
+      --ink: #e8eaef;
+      --ink-2: #cdd1d9;
+      --muted: #959ead;
+      --muted-2: #7a8292;
+      --line: #2a2e38;
+      --line-2: #333843;
+      --brand: #4d8aff;
+      --brand-hover: #669cff;
+      --brand-dark: #85b3ff;
+      --soft: #1a2340;
+      --soft-2: #1f2b50;
+      --green: #34c759;
+      --green-bg: #132a1a;
+      --yellow: #f0a500;
+      --yellow-bg: #2a2010;
+      --red: #ff6b60;
+      --red-bg: #2a1515;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.20);
+      --shadow: 0 10px 28px rgba(0,0,0,0.30);
+      --shadow-lg: 0 18px 45px rgba(0,0,0,0.40);
+    }
+
+    /* ============================================
+       基础重置
+       ============================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 74px;
     }
 
     body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-        "Microsoft YaHei", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
       color: var(--ink);
       background: var(--bg);
-      line-height: 1.65;
+      line-height: 1.68;
+      transition: color var(--transition), background var(--transition);
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* 焦点可见 */
+    :focus-visible {
+      outline: 2.5px solid var(--brand);
+      outline-offset: 2px;
+      border-radius: 4px;
     }
 
+    /* 跳过导航 */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      z-index: 100;
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      background: var(--brand);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .skip-link:focus { top: 8px; }
+
+    /* ============================================
+       阅读进度条
+       ============================================ */
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0; z-index: 100;
+      height: 3px;
+      background: linear-gradient(90deg, var(--brand), #5e9eff, #a78bfa);
+      width: 0%;
+      transition: width 0.12s linear;
+    }
+
+    /* ============================================
+       顶部导航
+       ============================================ */
     .topbar {
       position: sticky;
       top: 0;
-      z-index: 10;
-      border-bottom: 1px solid rgba(228, 231, 236, 0.85);
-      background: rgba(255, 255, 255, 0.92);
+      z-index: 50;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
       backdrop-filter: blur(16px);
+      transition: background var(--transition), border-color var(--transition);
     }
 
     .topbar-inner {
-      max-width: 1120px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 14px 22px;
+      padding: 12px 22px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 18px;
+      gap: 14px;
+      flex-wrap: wrap;
     }
 
     .logo {
@@ -64,718 +150,1545 @@
       font-weight: 750;
       letter-spacing: 0;
       white-space: nowrap;
+      font-size: 17px;
+      flex-shrink: 0;
     }
 
     .logo-mark {
-      width: 34px;
-      height: 34px;
+      width: 34px; height: 34px;
       border-radius: 8px;
-      display: grid;
-      place-items: center;
+      display: grid; place-items: center;
       color: white;
       background: linear-gradient(145deg, #14171f, #3c4351);
-      box-shadow: inset 0 -6px 12px rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 -6px 12px rgba(255,255,255,0.12);
+      font-size: 18px;
     }
 
-    nav {
+    /* 搜索框 */
+    .search-wrap {
+      position: relative;
+      flex: 1 1 180px;
+      min-width: 140px;
+      max-width: 260px;
+    }
+    .search-wrap input {
+      width: 100%;
+      height: 38px;
+      padding: 0 14px 0 38px;
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 14px;
+      transition: all var(--transition);
+    }
+    .search-wrap input:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(15,98,254,0.12);
+      outline: none;
+    }
+    .search-wrap .search-icon {
+      position: absolute;
+      left: 13px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 15px;
+      pointer-events: none;
+    }
+    .search-clear {
+      position: absolute;
+      right: 8px; top: 50%;
+      transform: translateY(-50%);
+      width: 24px; height: 24px;
+      border: none; border-radius: 50%;
+      background: var(--line);
+      color: var(--muted);
+      cursor: pointer;
+      display: none;
+      align-items: center; justify-content: center;
+      font-size: 14px;
+      line-height: 1;
+    }
+    .search-clear.visible { display: flex; }
+
+    /* 导航链接 */
+    .nav-links {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 2px;
       overflow-x: auto;
       scrollbar-width: none;
+      flex-shrink: 0;
     }
-
-    nav::-webkit-scrollbar {
-      display: none;
-    }
-
-    nav a {
-      padding: 8px 11px;
-      border-radius: 8px;
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a {
+      padding: 7px 11px;
+      border-radius: var(--radius);
       color: var(--muted);
       font-size: 14px;
       white-space: nowrap;
+      transition: all var(--transition);
     }
-
-    nav a:hover {
+    .nav-links a:hover,
+    .nav-links a.active {
       color: var(--brand-dark);
       background: var(--soft);
     }
 
+    /* 暗黑模式按钮 */
+    .theme-toggle {
+      flex-shrink: 0;
+      width: 38px; height: 38px;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 18px;
+      display: grid; place-items: center;
+      transition: all var(--transition);
+    }
+    .theme-toggle:hover {
+      background: var(--soft);
+      border-color: var(--brand);
+    }
+
+    /* ============================================
+       Hero 区域
+       ============================================ */
     .hero {
-      max-width: 1120px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 62px 22px 34px;
+      padding: 56px 22px 40px;
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-      gap: 34px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+      gap: 40px;
       align-items: center;
     }
 
     .eyebrow {
-      margin: 0 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 14px;
       color: var(--brand-dark);
       font-size: 14px;
       font-weight: 700;
     }
+    .eyebrow::before {
+      content: "";
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.6); }
+    }
 
     h1 {
-      margin: 0;
       max-width: 780px;
-      font-size: clamp(36px, 6vw, 68px);
-      line-height: 1.04;
-      letter-spacing: 0;
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1.06;
+      letter-spacing: -0.01em;
+    }
+    h1 .highlight {
+      background: linear-gradient(135deg, var(--brand), #7c5cfc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .hero p {
-      margin: 20px 0 0;
-      max-width: 670px;
+      margin: 18px 0 0;
+      max-width: 640px;
       color: var(--muted);
-      font-size: 18px;
+      font-size: 17px;
     }
 
     .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 28px;
+      display: flex; flex-wrap: wrap;
+      gap: 12px; margin-top: 26px;
     }
 
     .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 0 18px;
-      border-radius: 8px;
-      border: 1px solid var(--line);
-      background: white;
-      font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 7px;
+      min-height: 46px; padding: 0 22px;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      font-weight: 650; font-size: 15px;
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
     }
-
+    .button:hover {
+      border-color: var(--brand);
+      box-shadow: 0 4px 14px rgba(15,98,254,0.10);
+    }
     .button.primary {
       border-color: var(--brand);
-      color: white;
+      color: #fff;
       background: var(--brand);
     }
+    .button.primary:hover {
+      background: var(--brand-hover);
+      border-color: var(--brand-hover);
+      box-shadow: 0 6px 20px rgba(15,98,254,0.25);
+    }
 
+    /* 手机模型 */
     .phone-demo {
-      width: min(100%, 360px);
+      width: min(100%, 340px);
       margin: 0 auto;
       padding: 14px;
       border-radius: 36px;
       background: #191b22;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-lg);
+      transition: transform var(--transition);
     }
-
+    .phone-demo:hover {
+      transform: translateY(-4px);
+    }
     .phone-screen {
-      min-height: 610px;
+      min-height: 580px;
       border-radius: 26px;
       overflow: hidden;
       background:
-        radial-gradient(circle at 70% 8%, rgba(255, 255, 255, 0.95), transparent 18%),
+        radial-gradient(circle at 70% 8%, rgba(255,255,255,0.95), transparent 18%),
         linear-gradient(155deg, #d9ecff 0%, #bcd4ff 45%, #f6d6df 100%);
       position: relative;
-      padding: 42px 18px 18px;
+      padding: 40px 16px 16px;
     }
-
     .notch {
       position: absolute;
-      top: 12px;
-      left: 50%;
-      width: 92px;
-      height: 26px;
+      top: 10px; left: 50%;
+      width: 86px; height: 24px;
       transform: translateX(-50%);
       border-radius: 999px;
       background: #11131a;
     }
-
-    .status {
-      display: flex;
-      justify-content: space-between;
+    .phone-time {
+      text-align: center;
       color: #11131a;
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 28px;
+      font-weight: 780;
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
     }
-
+    .phone-date {
+      text-align: center;
+      color: #555b6e;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
     .widget {
-      margin-top: 28px;
       padding: 16px;
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.78);
-      box-shadow: 0 10px 25px rgba(39, 54, 88, 0.10);
+      background: rgba(255,255,255,0.78);
+      box-shadow: 0 10px 25px rgba(39,54,88,0.10);
+      margin-bottom: 7px;
     }
-
+    .widget .w-label {
+      font-size: 11px;
+      color: #8b919e;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+    }
     .widget strong {
       display: block;
-      font-size: 28px;
+      font-size: 26px;
       line-height: 1.2;
+      margin: 2px 0 4px;
+      color: #1a1d25;
     }
-
+    .widget .w-desc {
+      font-size: 12px;
+      color: #68707f;
+      margin: 0;
+    }
     .app-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-top: 28px;
+      gap: 14px;
+      margin-top: 22px;
     }
-
-    .app {
-      display: grid;
-      justify-items: center;
-      gap: 6px;
+    .app-item {
+      display: grid; justify-items: center;
+      gap: 5px;
       color: #1a1d25;
-      font-size: 12px;
-      font-weight: 650;
+      font-size: 11px; font-weight: 650;
       text-align: center;
     }
-
     .app-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 13px;
-      display: grid;
-      place-items: center;
-      color: white;
-      font-size: 22px;
-      font-weight: 750;
-      background: var(--brand);
-      box-shadow: 0 9px 18px rgba(42, 76, 125, 0.18);
+      width: 46px; height: 46px;
+      border-radius: 12px;
+      display: grid; place-items: center;
+      color: #fff; font-size: 20px; font-weight: 750;
+      box-shadow: 0 8px 16px rgba(42,76,125,0.16);
+      transition: transform 0.2s;
+      cursor: default;
     }
-
+    .app-icon:hover { transform: scale(1.08); }
     .dock {
       position: absolute;
-      left: 18px;
-      right: 18px;
-      bottom: 18px;
+      left: 16px; right: 16px; bottom: 16px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      padding: 12px;
-      border-radius: 22px;
-      background: rgba(255, 255, 255, 0.55);
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.55);
       backdrop-filter: blur(14px);
     }
+    .dock .app-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      font-size: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.10);
+    }
 
+    /* ============================================
+       主内容区
+       ============================================ */
     main {
-      max-width: 1120px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 8px 22px 64px;
+      padding: 8px 22px 80px;
     }
 
     section {
-      scroll-margin-top: 82px;
-      margin-top: 42px;
+      scroll-margin-top: 76px;
+      margin-top: 48px;
     }
 
     .section-head {
       display: flex;
       justify-content: space-between;
-      align-items: end;
+      align-items: flex-end;
       gap: 18px;
-      margin-bottom: 18px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
     }
-
-    h2 {
-      margin: 0;
-      font-size: 30px;
+    .section-head h2 {
+      font-size: clamp(26px, 4vw, 32px);
       line-height: 1.2;
     }
-
+    .section-head .section-icon {
+      font-size: 28px;
+    }
     .section-head p {
-      margin: 8px 0 0;
+      margin: 6px 0 0;
       max-width: 680px;
       color: var(--muted);
     }
 
+    /* 网格 */
     .grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
     }
+    .grid.two { grid-template-columns: repeat(2, 1fr); }
+    .grid.four { grid-template-columns: repeat(4, 1fr); }
 
-    .grid.two {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
+    /* 卡片 */
     .card {
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: var(--radius-lg);
       background: var(--panel);
-      padding: 20px;
-      box-shadow: 0 10px 28px rgba(20, 28, 45, 0.04);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition);
     }
-
+    .card:hover {
+      box-shadow: var(--shadow);
+      transform: translateY(-2px);
+      border-color: var(--line-2);
+    }
     .card h3 {
       margin: 0 0 8px;
-      font-size: 19px;
+      font-size: 18px;
       line-height: 1.3;
     }
-
-    .card p,
-    .card li {
+    .card p, .card li {
       color: var(--muted);
     }
-
-    .card p {
-      margin: 0;
-    }
+    .card p { margin: 0; }
 
     .badge {
-      display: inline-flex;
-      align-items: center;
-      min-height: 26px;
-      padding: 0 9px;
-      margin-bottom: 12px;
+      display: inline-flex; align-items: center;
+      min-height: 26px; padding: 0 10px;
+      margin-bottom: 10px;
       border-radius: 999px;
       color: var(--brand-dark);
       background: var(--soft);
-      font-size: 13px;
-      font-weight: 750;
+      font-size: 12px; font-weight: 750;
+      letter-spacing: 0.02em;
     }
 
-    ol,
-    ul {
-      margin: 10px 0 0;
-      padding-left: 20px;
-    }
+    ol, ul { margin: 10px 0 0; padding-left: 20px; }
+    li + li { margin-top: 6px; }
 
-    li + li {
-      margin-top: 7px;
-    }
-
+    /* 步骤 */
     .steps {
       counter-reset: step;
-      display: grid;
-      gap: 12px;
+      display: grid; gap: 14px;
     }
-
     .step {
       counter-increment: step;
       display: grid;
-      grid-template-columns: 44px minmax(0, 1fr);
-      gap: 14px;
-      align-items: start;
-      padding: 18px;
+      grid-template-columns: 48px minmax(0, 1fr);
+      gap: 16px; align-items: start;
+      padding: 20px;
       border: 1px solid var(--line);
-      border-radius: 8px;
-      background: white;
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      transition: all var(--transition);
     }
-
+    .step:hover {
+      box-shadow: var(--shadow);
+      border-color: var(--line-2);
+    }
     .step::before {
       content: counter(step);
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      display: grid;
-      place-items: center;
-      color: white;
+      width: 42px; height: 42px;
+      border-radius: var(--radius);
+      display: grid; place-items: center;
+      color: #fff;
       background: var(--brand);
-      font-weight: 800;
+      font-weight: 800; font-size: 18px;
+      flex-shrink: 0;
     }
+    .step h3 { margin: 0 0 4px; font-size: 17px; }
+    .step p { margin: 0; color: var(--muted); }
 
-    .step h3 {
-      margin: 0 0 4px;
-      font-size: 18px;
-    }
-
-    .step p {
-      margin: 0;
-      color: var(--muted);
-    }
-
+    /* 提示条 */
     .tip {
       border-left: 4px solid var(--green);
-      background: #effaf4;
+      background: var(--green-bg);
     }
-
     .warning {
       border-left: 4px solid var(--yellow);
-      background: #fff7e5;
+      background: var(--yellow-bg);
+    }
+    .danger {
+      border-left: 4px solid var(--red);
+      background: var(--red-bg);
     }
 
+    /* 表格 */
     .compare {
       width: 100%;
       border-collapse: collapse;
       overflow: hidden;
-      border-radius: 8px;
-      background: white;
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      box-shadow: var(--shadow-sm);
     }
-
-    .compare th,
-    .compare td {
-      padding: 14px;
+    .compare th, .compare td {
+      padding: 14px 16px;
       border: 1px solid var(--line);
       text-align: left;
       vertical-align: top;
     }
-
     .compare th {
-      background: #f0f4fb;
+      background: var(--soft);
       font-size: 14px;
+      font-weight: 700;
+      color: var(--ink-2);
+    }
+    .compare td { color: var(--muted); }
+    .compare tbody tr {
+      transition: background var(--transition);
+    }
+    .compare tbody tr:hover {
+      background: var(--bg);
     }
 
-    .compare td {
+    /* ============================================
+       FAQ 手风琴
+       ============================================ */
+    .accordion {
+      display: grid; gap: 10px;
+    }
+    .accordion-item {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      overflow: hidden;
+      transition: all var(--transition);
+    }
+    .accordion-btn {
+      width: 100%;
+      padding: 18px 20px;
+      border: none;
+      background: none;
+      color: var(--ink);
+      font: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: background var(--transition);
+    }
+    .accordion-btn:hover { background: var(--bg); }
+    .accordion-btn .arrow {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--soft);
+      display: grid; place-items: center;
+      font-size: 14px;
+      transition: transform var(--transition);
+      color: var(--brand);
+    }
+    .accordion-item.open .accordion-btn .arrow {
+      transform: rotate(180deg);
+    }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .accordion-item.open .accordion-body {
+      max-height: 400px;
+    }
+    .accordion-content {
+      padding: 0 20px 18px;
       color: var(--muted);
+      line-height: 1.7;
     }
 
+    /* ============================================
+       Siri 互动卡片
+       ============================================ */
+    .siri-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, #1c1c1e, #2c2c2e);
+      color: #fff;
+      margin-top: 14px;
+    }
+    .siri-ball {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #ff5e9c, #ff3b6e, #8b5cf6, #4d8aff, #23d5ab);
+      background-size: 300% 300%;
+      animation: siri-shift 4s ease infinite;
+    }
+    @keyframes siri-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .siri-card p { margin: 0; font-size: 15px; line-height: 1.5; }
+    .siri-card em { color: #ffb347; font-style: normal; }
+
+    /* ============================================
+       页脚
+       ============================================ */
     .footer {
-      margin-top: 44px;
-      padding: 24px;
-      border-radius: 8px;
-      color: white;
+      margin-top: 52px;
+      padding: 32px;
+      border-radius: var(--radius-xl);
+      color: #fff;
       background: linear-gradient(135deg, #151a24, #283244);
     }
+    .footer h2 { font-size: 24px; }
+    .footer p { color: rgba(255,255,255,0.78); margin: 8px 0 0; max-width: 680px; }
 
-    .footer h2 {
-      font-size: 24px;
+    /* ============================================
+       回到顶部按钮
+       ============================================ */
+    .back-to-top {
+      position: fixed;
+      right: 24px; bottom: 24px;
+      z-index: 40;
+      width: 44px; height: 44px;
+      border: 1.5px solid var(--line);
+      border-radius: 50%;
+      background: var(--panel);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 20px;
+      display: grid; place-items: center;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: all var(--transition);
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--brand);
+      color: #fff;
+      border-color: var(--brand);
     }
 
-    .footer p {
-      color: rgba(255, 255, 255, 0.78);
-      margin: 8px 0 0;
+    /* ============================================
+       动画
+       ============================================ */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in {
+      animation: fadeInUp 0.5s ease forwards;
+      opacity: 0;
     }
 
-    @media (max-width: 860px) {
-      .topbar-inner {
-        align-items: flex-start;
-        flex-direction: column;
+    /* 搜索高亮 */
+    .search-highlight {
+      background: #ffeb3b;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+    [data-theme="dark"] .search-highlight {
+      background: #5c4a00;
+    }
+
+    /* 无搜索结果 */
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .no-results.visible { display: block; }
+
+    /* ============================================
+       打印样式
+       ============================================ */
+    @media print {
+      .topbar, .back-to-top, .progress-bar, .theme-toggle,
+      .search-wrap, .hero-actions, .phone-demo {
+        display: none !important;
       }
+      body { background: #fff; color: #000; }
+      .card, .step, .accordion-item {
+        box-shadow: none;
+        break-inside: avoid;
+        border: 1px solid #ccc;
+      }
+      .accordion-body { max-height: none !important; }
+      section { margin-top: 24px; page-break-inside: avoid; }
+      a { color: #000; text-decoration: underline; }
+    }
 
+    /* ============================================
+       响应式
+       ============================================ */
+    @media (max-width: 960px) {
       .hero {
         grid-template-columns: 1fr;
-        padding-top: 42px;
+        padding-top: 36px;
       }
-
-      .grid,
-      .grid.two {
-        grid-template-columns: 1fr;
-      }
-
-      .section-head {
-        display: block;
-      }
+      .phone-demo { max-width: 300px; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .grid.four { grid-template-columns: repeat(2, 1fr); }
+      .section-head { display: block; }
     }
 
-    @media (max-width: 520px) {
-      .topbar-inner,
-      .hero,
-      main {
-        padding-left: 16px;
-        padding-right: 16px;
-      }
+    @media (max-width: 640px) {
+      .topbar-inner { flex-direction: column; align-items: stretch; gap: 10px; }
+      .search-wrap { max-width: none; }
+      .nav-links { justify-content: flex-start; }
+      .grid, .grid.two, .grid.four { grid-template-columns: 1fr; }
+      h1 { font-size: 32px; }
+      .hero p { font-size: 15px; }
+      .phone-screen { min-height: 500px; }
+      .app-icon { width: 40px; height: 40px; border-radius: 10px; font-size: 17px; }
+      .compare { display: block; overflow-x: auto; }
+    }
 
-      h1 {
-        font-size: 38px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-
-      .phone-screen {
-        min-height: 560px;
-      }
-
-      .app-icon {
-        width: 42px;
-        height: 42px;
-        border-radius: 11px;
-      }
-
-      .compare {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-      }
+    @media (max-width: 400px) {
+      .hero, main { padding-left: 14px; padding-right: 14px; }
+      .card { padding: 16px; }
     }
   </style>
 </head>
 <body>
+  <!-- 跳过导航 -->
+  <a href="#main-content" class="skip-link">跳过导航，直达内容</a>
+
+  <!-- 阅读进度条 -->
+  <div class="progress-bar" id="progressBar" role="progressbar" aria-label="阅读进度"></div>
+
+  <!-- 顶部导航 -->
   <header class="topbar">
     <div class="topbar-inner">
       <a class="logo" href="#top" aria-label="返回顶部">
         <span class="logo-mark">i</span>
         <span>苹果手机使用教程</span>
       </a>
-      <nav aria-label="页面导航">
+
+      <div class="search-wrap">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input type="search" id="searchInput" placeholder="搜索教程内容…" aria-label="搜索教程内容">
+        <button class="search-clear" id="searchClear" aria-label="清除搜索">✕</button>
+      </div>
+
+      <nav class="nav-links" aria-label="页面导航" id="mainNav">
         <a href="#start">快速上手</a>
         <a href="#gestures">手势操作</a>
         <a href="#settings">基础设置</a>
         <a href="#apps">常用功能</a>
+        <a href="#siri">Siri</a>
+        <a href="#screentime">屏幕时间</a>
         <a href="#privacy">隐私安全</a>
         <a href="#faq">常见问题</a>
+        <a href="#tips">使用技巧</a>
       </nav>
+
+      <button class="theme-toggle" id="themeToggle" aria-label="切换暗黑模式" title="切换暗黑模式">
+        🌙
+      </button>
     </div>
   </header>
 
+  <!-- Hero -->
   <div id="top" class="hero">
     <div>
       <p class="eyebrow">适合新 iPhone 用户和长辈学习</p>
-      <h1>从开机到熟练使用，一页学会苹果手机。</h1>
+      <h1>从开机到熟练使用，<br><span class="highlight">一页学会</span>苹果手机。</h1>
       <p>
         这份教程按真实使用顺序整理：激活手机、连接网络、学会手势、
         设置 Apple ID、安装应用、拍照、备份、隐私保护和常见故障处理。
+        每天学一点，三天变熟练。
       </p>
       <div class="hero-actions">
-        <a class="button primary" href="#start">开始学习</a>
-        <a class="button" href="#faq">查看常见问题</a>
+        <a class="button primary" href="#start">📖 开始学习</a>
+        <a class="button" href="#faq">❓ 常见问题</a>
+        <a class="button" href="#tips">💡 使用技巧</a>
       </div>
     </div>
 
-    <aside class="phone-demo" aria-label="iPhone 首页示意图">
+    <aside class="phone-demo" aria-label="iPhone 桌面示意图">
       <div class="phone-screen">
         <div class="notch"></div>
-        <div class="status">
-          <span>9:41</span>
-          <span>5G 100%</span>
-        </div>
+        <div class="phone-time">9:41</div>
+        <div class="phone-date">6月21日 星期六</div>
         <div class="widget">
-          <span>今天建议</span>
+          <span class="w-label">📋 今天建议</span>
           <strong>先学会 5 个手势</strong>
-          <p>返回主屏幕、切换应用、打开控制中心、搜索、长按菜单。</p>
+          <p class="w-desc">返回主屏幕 · 切换应用 · 控制中心 · 搜索 · 长按菜单</p>
         </div>
         <div class="app-grid">
-          <div class="app"><span class="app-icon" style="background:#31a24c">电</span>电话</div>
-          <div class="app"><span class="app-icon" style="background:#007aff">信</span>信息</div>
-          <div class="app"><span class="app-icon" style="background:#ff9500">照</span>照片</div>
-          <div class="app"><span class="app-icon" style="background:#5856d6">店</span>App Store</div>
-          <div class="app"><span class="app-icon" style="background:#1c1c1e">相</span>相机</div>
-          <div class="app"><span class="app-icon" style="background:#34c759">微</span>微信</div>
-          <div class="app"><span class="app-icon" style="background:#ff3b30">图</span>地图</div>
-          <div class="app"><span class="app-icon" style="background:#5ac8fa">设</span>设置</div>
+          <div class="app-item"><span class="app-icon" style="background:#31a24c">📞</span>电话</div>
+          <div class="app-item"><span class="app-icon" style="background:#007aff">💬</span>信息</div>
+          <div class="app-item"><span class="app-icon" style="background:#ff9500">📷</span>照片</div>
+          <div class="app-item"><span class="app-icon" style="background:#5856d6">🏪</span>App Store</div>
+          <div class="app-item"><span class="app-icon" style="background:#1c1c1e">📸</span>相机</div>
+          <div class="app-item"><span class="app-icon" style="background:#34c759">💚</span>微信</div>
+          <div class="app-item"><span class="app-icon" style="background:#ff3b30">🗺️</span>地图</div>
+          <div class="app-item"><span class="app-icon" style="background:#5ac8fa">⚙️</span>设置</div>
         </div>
-        <div class="dock" aria-label="底部程序坞">
-          <div class="app-icon" style="background:#31a24c">☎</div>
-          <div class="app-icon" style="background:#007aff">✉</div>
-          <div class="app-icon" style="background:#ff9500">◎</div>
-          <div class="app-icon" style="background:#1c1c1e">⌘</div>
+        <div class="dock">
+          <span class="app-icon" style="background:#31a24c">📞</span>
+          <span class="app-icon" style="background:#007aff">💬</span>
+          <span class="app-icon" style="background:#ff9500">📷</span>
+          <span class="app-icon" style="background:#1c1c1e">🌐</span>
         </div>
       </div>
     </aside>
   </div>
 
-  <main>
+  <!-- 主体内容 -->
+  <main id="main-content">
+    <!-- 无搜索结果提示 -->
+    <div class="no-results" id="noResults">
+      <p style="font-size:40px;margin-bottom:12px;">🔍</p>
+      <p><strong>没有找到相关内容</strong></p>
+      <p>试试其他关键词，比如「手势」「设置」「隐私」</p>
+    </div>
+
+    <!-- ============ 快速上手 ============ -->
     <section id="start">
       <div class="section-head">
         <div>
-          <h2>快速上手</h2>
-          <p>新手机第一次使用时，按下面顺序完成即可。已经激活过的手机也可以跳过前两步。</p>
+          <h2>🚀 快速上手</h2>
+          <p>新手机第一次使用时按下面顺序操作。已激活的手机可跳过前两步。</p>
         </div>
       </div>
       <div class="steps">
         <article class="step">
           <div>
             <h3>长按侧边按钮开机</h3>
-            <p>看到苹果标志后松手。若没反应，先充电 15 分钟再试。</p>
+            <p>长按右侧电源键，看到苹果标志后松手。若没反应，先充电 15 分钟再试。关机也是长按侧边键 + 任意音量键。</p>
           </div>
         </article>
         <article class="step">
           <div>
-            <h3>选择语言、地区和无线网络</h3>
-            <p>建议选择“简体中文”和“中国大陆”，连接家里的 Wi-Fi，后续下载应用会更稳定。</p>
+            <h3>选择语言、地区与无线网络</h3>
+            <p>建议选择「简体中文」和「中国大陆」，然后连接家里的 Wi-Fi。连接网络后，后续下载应用和同步数据会更稳定。</p>
           </div>
         </article>
         <article class="step">
           <div>
             <h3>登录或创建 Apple ID</h3>
-            <p>Apple ID 用于下载应用、同步照片、备份通讯录。请记住账号、密码和绑定手机号。</p>
+            <p>Apple ID 是使用 iPhone 的核心账号——下载应用、同步照片、备份通讯录都靠它。请务必记住账号、密码和绑定的手机号。</p>
           </div>
         </article>
         <article class="step">
           <div>
-            <h3>设置 Face ID 和锁屏密码</h3>
-            <p>Face ID 用脸解锁，锁屏密码是备用钥匙。密码不要设置成生日或连续数字。</p>
+            <h3>设置 Face ID 与锁屏密码</h3>
+            <p>Face ID 用面部识别解锁手机，锁屏密码是备用方式。密码避免设成生日、连续数字或简单重复组合。</p>
+          </div>
+        </article>
+        <article class="step">
+          <div>
+            <h3>传输旧手机数据</h3>
+            <p>如果你之前用过 iPhone，可以在激活时选择「从另一台 iPhone 传输」。将旧手机靠近新手机，按屏幕提示操作即可迁移全部数据。</p>
           </div>
         </article>
       </div>
     </section>
 
+    <!-- ============ 手势操作 ============ -->
     <section id="gestures">
       <div class="section-head">
         <div>
-          <h2>手势操作</h2>
-          <p>没有实体 Home 键的 iPhone 主要靠手势操作。先掌握这些，日常使用会顺很多。</p>
+          <h2>👆 手势操作</h2>
+          <p>全面屏 iPhone 没有实体 Home 键，全靠手势。掌握这些操作，日常使用会流畅很多。</p>
         </div>
       </div>
       <div class="grid">
         <article class="card">
-          <span class="badge">返回主屏幕</span>
-          <h3>从屏幕底部向上轻扫</h3>
-          <p>打开任何应用时，从最底部的小横条向上滑，就能回到桌面。</p>
+          <span class="badge">最常用</span>
+          <h3>返回主屏幕</h3>
+          <p>从屏幕最底部的小横条向上轻扫，任何应用中都能立刻回到桌面。</p>
         </article>
         <article class="card">
-          <span class="badge">切换应用</span>
-          <h3>向上滑并停一下</h3>
-          <p>出现应用卡片后，左右滑动选择应用。把卡片向上滑可以关闭应用。</p>
+          <span class="badge">多任务</span>
+          <h3>切换应用</h3>
+          <p>从底部向上滑并<strong>在中间停一下</strong>，出现应用卡片后左右滑动选择。把卡片向上滑可以彻底关闭应用。</p>
         </article>
         <article class="card">
-          <span class="badge">控制中心</span>
-          <h3>从右上角向下滑</h3>
-          <p>可快速开关 Wi-Fi、蓝牙、手电筒、亮度、音量和录屏。</p>
+          <span class="badge">快捷</span>
+          <h3>控制中心</h3>
+          <p>从屏幕<strong>右上角</strong>向下轻扫，可快速开关 Wi-Fi、蓝牙、手电筒、亮度、音量，还能录屏和打开计算器。</p>
         </article>
         <article class="card">
-          <span class="badge">通知中心</span>
-          <h3>从顶部中间向下滑</h3>
-          <p>查看短信、微信提醒、日历事项。左滑通知可清除或管理提醒。</p>
+          <span class="badge">查看</span>
+          <h3>通知中心</h3>
+          <p>从屏幕<strong>顶部中间</strong>向下滑，查看短信、微信、日历等所有通知。左滑单条通知可快速清除或管理。</p>
         </article>
         <article class="card">
-          <span class="badge">全局搜索</span>
-          <h3>桌面中间向下滑</h3>
-          <p>输入应用名、联系人、设置项或网页关键词，能快速找到要打开的内容。</p>
+          <span class="badge">高效</span>
+          <h3>全局搜索</h3>
+          <p>在桌面<strong>中间向下滑</strong>，直接输入应用名、联系人、设置项或网页关键词，快速找到目标。</p>
         </article>
         <article class="card">
-          <span class="badge">长按菜单</span>
-          <h3>按住图标或文字不放</h3>
-          <p>常用于复制文字、保存图片、移动应用、卸载应用或打开快捷操作。</p>
+          <span class="badge">进阶</span>
+          <h3>长按菜单</h3>
+          <p>按住图标、文字或图片不放，弹出快捷操作菜单。常用于复制文字、保存图片、移动或卸载应用。</p>
+        </article>
+        <article class="card">
+          <span class="badge">浏览</span>
+          <h3>双指缩放</h3>
+          <p>在照片、网页或地图上，两根手指捏合缩小、张开放大。看地图和照片时特别常用。</p>
+        </article>
+        <article class="card">
+          <span class="badge">便捷</span>
+          <h3>可达性（单手模式）</h3>
+          <p>从屏幕底部的小横条<strong>向下轻扫</strong>（不是向上），屏幕上半部分会降下来，方便单手点击顶部内容。</p>
+          <p style="font-size:13px;color:var(--muted-2);margin-top:6px;">需先在「设置 > 辅助功能 > 触控」中开启「便捷访问」。</p>
+        </article>
+        <article class="card">
+          <span class="badge">实用</span>
+          <h3>滑动返回</h3>
+          <p>在大多数应用中，从屏幕<strong>左边缘</strong>向右滑动即可返回上一页，比点击左上角箭头更方便。</p>
+        </article>
+        <article class="card">
+          <span class="badge">编辑</span>
+          <h3>三指手势</h3>
+          <p>编辑文字时：三指向左滑 = 撤销，三指向右滑 = 重做，三指捏合 = 复制，三指张开 = 粘贴。</p>
         </article>
       </div>
     </section>
 
+    <!-- ============ 基础设置 ============ -->
     <section id="settings">
       <div class="section-head">
         <div>
-          <h2>基础设置</h2>
-          <p>这些设置能明显改善使用体验，适合新机设置完成后一次性检查。</p>
+          <h2>⚙️ 基础设置</h2>
+          <p>新机设置完成后，建议一次性检查以下项目，能明显改善日常使用体验。</p>
         </div>
       </div>
       <div class="grid two">
         <article class="card">
-          <h3>连接网络</h3>
+          <h3>📶 连接网络</h3>
           <ul>
-            <li>打开“设置”里的“无线局域网”，选择家里的 Wi-Fi 并输入密码。</li>
-            <li>打开“蜂窝网络”，确认手机号卡已启用，外出时可使用流量。</li>
-            <li>如果网速异常，先开关一次“飞行模式”，再重连网络。</li>
+            <li>打开「设置 > 无线局域网」，选择家里的 Wi-Fi 并输入密码。</li>
+            <li>打开「设置 > 蜂窝网络」，确认手机号卡已启用，外出可使用流量。</li>
+            <li>网速异常时开关一次「飞行模式」再重连，通常能解决。</li>
           </ul>
         </article>
         <article class="card">
-          <h3>调整显示和文字</h3>
+          <h3>🖥️ 显示与文字</h3>
           <ul>
-            <li>进入“设置 > 显示与亮度”，打开“自动亮度”可省电。</li>
-            <li>进入“设置 > 显示与亮度 > 文字大小”，调到看得舒服。</li>
-            <li>夜间可打开“夜览”，屏幕颜色更温和。</li>
+            <li>进入「设置 > 显示与亮度」，开启「自动亮度」可省电护眼。</li>
+            <li>在「文字大小」中拖动滑块，调到看得最舒服的大小。</li>
+            <li>夜间打开「夜览」模式，屏幕色温变暖，减少蓝光对睡眠的影响。</li>
           </ul>
         </article>
         <article class="card">
-          <h3>设置铃声和提醒</h3>
+          <h3>🔔 铃声与提醒</h3>
           <ul>
-            <li>进入“设置 > 声音与触感”，调整铃声和提醒音量。</li>
-            <li>侧边静音开关拨到橙色时，手机会静音。</li>
-            <li>重要联系人可单独设置来电铃声，避免错过电话。</li>
+            <li>「设置 > 声音与触感」中调整铃声和提醒音量。</li>
+            <li>机身左侧的静音开关：拨到露出橙色 = 静音模式。</li>
+            <li>在通讯录中可为重要联系人单独设置铃声和振动模式。</li>
           </ul>
         </article>
         <article class="card">
-          <h3>管理桌面应用</h3>
+          <h3>📱 桌面管理</h3>
           <ul>
-            <li>长按应用图标，可移动、删除或编辑主屏幕。</li>
-            <li>把一个图标拖到另一个图标上，可以创建文件夹。</li>
-            <li>不常用应用可移到“App 资源库”，桌面会更清爽。</li>
+            <li>长按桌面空白处进入编辑模式，可移动、删除应用或添加小组件。</li>
+            <li>把应用图标拖到另一个图标上自动创建文件夹，方便归类。</li>
+            <li>不常用应用可「从主屏幕移除」，它们会保留在 App 资源库中。</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>⌨️ 键盘设置</h3>
+          <ul>
+            <li>「设置 > 通用 > 键盘」可添加第三方键盘或开启滑动输入。</li>
+            <li>开启「自动改正」和「拼写检查」，打字时自动纠错。</li>
+            <li>长按空格键可移动光标，精准定位要修改的文字位置。</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>🔊 通知管理</h3>
+          <ul>
+            <li>「设置 > 通知」中可逐个应用设置通知方式：横幅、声音、标记。</li>
+            <li>开启「定时推送摘要」，非紧急通知会在指定时间批量推送。</li>
+            <li>睡眠时建议开启「专注模式 > 睡眠」，只允许重要联系人来电。</li>
           </ul>
         </article>
       </div>
     </section>
 
+    <!-- ============ 常用功能 ============ -->
     <section id="apps">
       <div class="section-head">
         <div>
-          <h2>常用功能</h2>
-          <p>下面是日常最常用的 iPhone 功能，照着路径操作即可。</p>
+          <h2>📦 常用功能</h2>
+          <p>日常最高频的操作，照着路径走一遍就能掌握。</p>
         </div>
       </div>
-      <table class="compare">
-        <thead>
-          <tr>
-            <th>功能</th>
-            <th>怎么用</th>
-            <th>实用建议</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>下载应用</td>
-            <td>打开 App Store，搜索应用名称，点“获取”或价格按钮。</td>
-            <td>只从 App Store 下载应用，避免安装不明来源软件。</td>
-          </tr>
-          <tr>
-            <td>拍照录像</td>
-            <td>打开相机，左右滑动选择照片、人像、视频等模式。</td>
-            <td>按住快门可快速录像，录像时点白色按钮可同时拍照。</td>
-          </tr>
-          <tr>
-            <td>截图</td>
-            <td>同时按侧边按钮和音量上键，屏幕闪一下即完成。</td>
-            <td>截图后点左下角缩略图，可裁剪、标注或分享。</td>
-          </tr>
-          <tr>
-            <td>隔空投送</td>
-            <td>分享照片或文件时选择“隔空投送”，再点附近的苹果设备。</td>
-            <td>在控制中心长按网络区域，可设置“仅限联系人”或“所有人 10 分钟”。</td>
-          </tr>
-          <tr>
-            <td>备份资料</td>
-            <td>进入“设置 > 你的姓名 > iCloud > iCloud 云备份”。</td>
-            <td>建议保持云备份开启，换手机或丢手机时更容易恢复数据。</td>
-          </tr>
-        </tbody>
-      </table>
+      <div style="overflow-x:auto;">
+        <table class="compare">
+          <thead>
+            <tr>
+              <th style="width:14%">功能</th>
+              <th style="width:38%">怎么操作</th>
+              <th style="width:48%">实用建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>下载应用</strong></td>
+              <td>打开 App Store → 搜索应用名称 → 点「获取」或价格按钮 → 验证 Face ID 或密码。</td>
+              <td>只从 App Store 官方渠道下载。免费应用显示「获取」，付费应用显示价格。下载过的应用可在「已购项目」中重新安装。</td>
+            </tr>
+            <tr>
+              <td><strong>拍照录像</strong></td>
+              <td>打开相机 → 左右滑动切换「照片」「人像」「视频」等模式 → 按快门或音量键拍摄。</td>
+              <td>按住快门可快速录像（快录），松手即停。录像时点白色辅助快门可同时拍照。人像模式适合拍人物和美食。</td>
+            </tr>
+            <tr>
+              <td><strong>截图</strong></td>
+              <td>同时按侧边按钮 + 音量上键，屏幕闪一下即完成。</td>
+              <td>截图后立即点左下角缩略图，可裁剪、标注文字箭头、签名后直接分享，不需要进相册。</td>
+            </tr>
+            <tr>
+              <td><strong>隔空投送</strong></td>
+              <td>分享照片或文件时选择「隔空投送」，再点附近苹果设备的名字。</td>
+              <td>在控制中心长按网络区域，可设为「仅限联系人」或「所有人 10 分钟」。传大量照片比微信快且不压缩画质。</td>
+            </tr>
+            <tr>
+              <td><strong>备份资料</strong></td>
+              <td>「设置 > 你的姓名 > iCloud > iCloud 云备份」→ 开启后连 Wi-Fi 时自动备份。</td>
+              <td>强烈建议保持开启。换手机、丢手机或系统故障时，可完整恢复照片、通讯录、聊天记录和应用数据。</td>
+            </tr>
+            <tr>
+              <td><strong>FaceTime 通话</strong></td>
+              <td>打开 FaceTime 应用或在通讯录中点视频图标，即可与苹果用户视频通话。</td>
+              <td>FaceTime 视频画质比微信高清，支持最多 32 人群聊。可在控制中心开启「人像模式」虚化背景。</td>
+            </tr>
+            <tr>
+              <td><strong>Apple Pay</strong></td>
+              <td>在「钱包」应用中添加银行卡 → 双击侧边按钮 → 刷脸验证 → 靠近刷卡机支付。</td>
+              <td>比扫码更快，不需要解锁手机进微信。支持公交卡（京津翼、上海等）和门禁卡。</td>
+            </tr>
+            <tr>
+              <td><strong>备忘录</strong></td>
+              <td>打开备忘录 → 点右下角新建 → 可打字、手写、扫描文档或插入照片。</td>
+              <td>扫描文档功能可自动矫正角度和裁剪，比拍照清晰。支持密码锁定敏感笔记。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
+    <!-- ============ Siri 与快捷指令 ============ -->
+    <section id="siri">
+      <div class="section-head">
+        <div>
+          <h2>🗣️ Siri 与快捷指令</h2>
+          <p>Siri 是 iPhone 内置的语音助手，快捷指令能帮你自动完成一连串操作。</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <article class="card">
+          <h3>唤醒 Siri</h3>
+          <ul>
+            <li>说「嘿 Siri」或长按侧边按钮即可唤醒。</li>
+            <li>可以问天气、设闹钟、发信息、打电话、播放音乐。</li>
+            <li>试试说：「嘿 Siri，提醒我明天下午 3 点开会」「嘿 Siri，给妈妈打电话」。</li>
+          </ul>
+          <div class="siri-card">
+            <div class="siri-ball"></div>
+            <p>试着说：<em>「嘿 Siri，今天天气怎么样？」</em></p>
+          </div>
+        </article>
+        <article class="card">
+          <h3>快捷指令</h3>
+          <ul>
+            <li>打开「快捷指令」应用，可在「自动化」中创建自动任务。</li>
+            <li>比如：连接 CarPlay 时自动播放音乐、到达某地点时自动发消息。</li>
+            <li>在「快捷指令中心」可以探索和添加别人做好的实用指令。</li>
+          </ul>
+          <p style="margin-top:10px;color:var(--muted);font-size:14px;">💡 新手推荐：添加「早安」快捷指令——一键报天气、日历和电量。</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ 屏幕使用时间 ============ -->
+    <section id="screentime">
+      <div class="section-head">
+        <div>
+          <h2>⏰ 屏幕使用时间与健康</h2>
+          <p>了解自己的手机使用习惯，保护眼睛和睡眠质量。</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <article class="card">
+          <h3>屏幕使用时间</h3>
+          <ul>
+            <li>「设置 > 屏幕使用时间」可查看每天花了多少时间在各个应用上。</li>
+            <li>开启「应用限额」为特定应用设定每日使用时长上限。</li>
+            <li>「停用时间」可在指定时段只允许电话和已批准的应用。</li>
+            <li>家长可为孩子的设备设置「内容和隐私访问限制」。</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>护眼与健康</h3>
+          <ul>
+            <li>「夜览」模式在日落后自动降低蓝光，帮助入睡。</li>
+            <li>开启「原彩显示」，屏幕色温随环境光自动调整，看久了不累。</li>
+            <li>「设置 > 辅助功能 > 显示与文字大小 > 降低白点值」可在夜间进一步降低亮度。</li>
+            <li>使用「健康」应用记录睡眠、步数和健康数据。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ 隐私安全 ============ -->
     <section id="privacy">
       <div class="section-head">
         <div>
-          <h2>隐私安全</h2>
-          <p>手机里有照片、通讯录、支付和聊天记录，安全设置值得认真做。</p>
+          <h2>🔒 隐私安全</h2>
+          <p>手机里有照片、通讯录、支付和聊天记录——安全设置值得认真对待。</p>
         </div>
       </div>
       <div class="grid">
         <article class="card tip">
-          <h3>开启“查找”</h3>
-          <p>进入“设置 > 你的姓名 > 查找”，打开“查找我的 iPhone”。手机丢失时可定位、播放声音或远程抹掉。</p>
+          <h3>🔍 开启「查找我的 iPhone」</h3>
+          <p>「设置 > 你的姓名 > 查找」→ 打开「查找我的 iPhone」和「发送最后位置」。手机丢失时可定位、远程播放声音、标记丢失模式或抹掉全部数据。</p>
         </article>
         <article class="card">
-          <h3>检查应用权限</h3>
-          <p>进入“设置 > 隐私与安全性”，定期查看定位、相机、麦克风、照片权限，不需要的就关闭。</p>
+          <h3>🔐 双重认证</h3>
+          <p>为 Apple ID 开启双重认证后，即使有人知道密码也无法在新设备上登录，因为还需要你信任设备上的验证码。</p>
+        </article>
+        <article class="card">
+          <h3>👁️ 检查应用权限</h3>
+          <p>「设置 > 隐私与安全性」中定期检查：定位、相机、麦克风、照片、通讯录等权限，不需要的果断关闭。特别留意哪些应用在后台使用定位。</p>
         </article>
         <article class="card warning">
-          <h3>警惕验证码和共享屏幕</h3>
-          <p>不要把短信验证码、Apple ID 密码告诉别人。接到自称客服要求共享屏幕或转账时，先挂断核实。</p>
+          <h3>🚫 警惕诈骗</h3>
+          <p>不要把短信验证码、Apple ID 密码告诉任何人。接到自称客服要求共享屏幕、转账或提供密码的电话——先挂断，通过官方渠道核实。</p>
+        </article>
+        <article class="card">
+          <h3>📊 应用跟踪透明度</h3>
+          <p>新应用打开时会弹窗询问是否允许跟踪——建议选「要求 App 不跟踪」。可在「设置 > 隐私与安全性 > 跟踪」中统一管理。</p>
+        </article>
+        <article class="card danger">
+          <h3>⚠️ 丢失模式</h3>
+          <p>手机丢失后，立刻用另一台苹果设备或 iCloud.com 开启「丢失模式」。这会锁定手机、显示你的联系电话，并暂停 Apple Pay。</p>
         </article>
       </div>
     </section>
 
+    <!-- ============ 常见问题（手风琴）============ -->
     <section id="faq">
       <div class="section-head">
         <div>
-          <h2>常见问题</h2>
-          <p>遇到小故障时，先试这些方法，很多问题不需要去维修店。</p>
+          <h2>❓ 常见问题</h2>
+          <p>遇到小故障时先试这些方法，大多数问题不需要跑维修店。</p>
+        </div>
+      </div>
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-btn" aria-expanded="false">
+            手机卡住或死机了怎么办？
+            <span class="arrow">▾</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              <p>先尝试锁屏再解锁。若无反应，快速按一下<strong>音量上键</strong>、快速按一下<strong>音量下键</strong>，然后<strong>长按侧边按钮</strong>直到出现苹果标志（约 10-15 秒）。这个操作叫「强制重启」，不会丢失数据。</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" aria-expanded="false">
+            忘记 Apple ID 密码怎么办？
+            <span class="arrow">▾</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              <p>在登录页面点击「忘记密码」，按提示用绑定的手机号或受信任设备重设密码。千万不要找陌生人或非官方渠道「代解锁」——那很可能是诈骗，可能导致手机被远程锁定。</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" aria-expanded="false">
+            存储空间满了怎么清理？
+            <span class="arrow">▾</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              <p>进入「设置 > 通用 > iPhone 储存空间」查看空间占用排行。建议：① 删除不用的应用；② 清理微信/QQ 的缓存和旧文件；③ 开启「iCloud 照片」选择「优化 iPhone 储存空间」，原片存云端、手机上只留小尺寸版本；④ 删除「最近删除」相簿中的照片。</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" aria-expanded="false">
+            电池不耐用怎么办？
+            <span class="arrow">▾</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              <p>① 进入「设置 > 电池」查看哪些应用耗电最多；② 降低屏幕亮度或开启自动亮度；③ 关闭不必要的后台应用刷新（「设置 > 通用 > 后台 App 刷新」）；④ 关闭不常用的定位权限；⑤ 电池健康度低于 80% 时建议更换电池（「设置 > 电池 > 电池健康」查看）。</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" aria-expanded="false">
+            无法连接 Wi-Fi 或经常断线？
+            <span class="arrow">▾</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              <p>① 打开「飞行模式」等 10 秒再关掉，让手机重新搜索网络；② 「设置 > Wi-Fi」中点击网络名右边的 ⓘ →「忽略此网络」，然后重新连接；③ 重启路由器；④ 「设置 > 通用 > 传输或还原 iPhone > 还原 > 还原网络设置」（不会删除数据，但会清除保存的 Wi-Fi 密码）。</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" aria-expanded="false">
+            应用闪退或打不开怎么办？
+            <span class="arrow">▾</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              <p>① 先彻底关闭应用（从底部上滑并停留，找到该应用卡片向上滑掉），再重新打开；② 重启手机；③ 去 App Store 检查应用是否有更新；④ 如果仍然闪退，删除应用后重新下载（注意：部分应用删除会丢失本地数据，先确认有无备份）。</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" aria-expanded="false">
+            如何把照片传到电脑上？
+            <span class="arrow">▾</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              <p><strong>Windows 电脑：</strong>安装「iCloud for Windows」或「设备连接」应用，用数据线连接手机后即可导入照片。<strong>Mac 电脑：</strong>连接数据线后打开「照片」应用或「图像捕捉」导入。也可以开启 iCloud 照片，照片会自动同步到所有设备上。</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" aria-expanded="false">
+            打电话声音小或听不清？
+            <span class="arrow">▾</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              <p>① 通话时按音量上键加大通话音量；② 检查听筒保护膜是否遮挡了顶部扬声器开孔；③ 「设置 > 辅助功能 > 听觉 > 电话降噪」开启可减少环境噪音；④ 用软毛刷轻轻清理听筒网罩的灰尘（不要用尖锐物体）。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 使用技巧 ============ -->
+    <section id="tips">
+      <div class="section-head">
+        <div>
+          <h2>💡 使用技巧</h2>
+          <p>一些不那么广为人知但非常实用的 tips，能让你的 iPhone 用起来更顺手。</p>
         </div>
       </div>
       <div class="grid two">
         <article class="card">
-          <h3>手机卡住了怎么办？</h3>
-          <p>先尝试锁屏再解锁。若无反应，快速按一下音量上键、快速按一下音量下键，然后长按侧边按钮直到出现苹果标志。</p>
+          <h3>📸 扫描文稿</h3>
+          <p>打开备忘录 → 新建 → 点相机图标 →「扫描文稿」。手机会自动识别边框并矫正角度，效果比拍照清晰得多，还能导出为 PDF。</p>
         </article>
         <article class="card">
-          <h3>忘记 Apple ID 密码怎么办？</h3>
-          <p>在登录页面点“忘记密码”，按提示用手机号或受信任设备重设。不要找陌生人代解锁。</p>
+          <h3>📏 测距仪</h3>
+          <p>打开「测距仪」应用，用摄像头对准物体即可测量长度和面积。测量身高、家具尺寸非常方便，精度在 ±1cm 以内。</p>
         </article>
         <article class="card">
-          <h3>存储空间满了怎么办？</h3>
-          <p>进入“设置 > 通用 > iPhone 储存空间”，删除不用的应用、清理大视频，或打开 iCloud 照片优化储存空间。</p>
+          <h3>🧮 计算器技巧</h3>
+          <p>在计算器中输错数字时，<strong>向左或向右滑动数字区域</strong>即可删除最后一位，不需要全部清空重来。横屏时计算器会变成科学计算器。</p>
         </article>
         <article class="card">
-          <h3>电池不耐用怎么办？</h3>
-          <p>降低屏幕亮度，关闭不必要的定位和后台刷新。进入“设置 > 电池”可查看耗电最多的应用。</p>
+          <h3>🖼️ 实况文本</h3>
+          <p>在相机、照片或截图中，直接<strong>长按文字区域</strong>即可选中和复制图片中的文字。支持中英文和数字，还可以一键翻译或拨打电话号码。</p>
+        </article>
+        <article class="card">
+          <h3>⌨️ 单手键盘</h3>
+          <p>长按键盘左下角的地球图标（或表情键），可选择将键盘<strong>靠左或靠右</strong>显示，方便单手打字。这个功能对大屏手机特别友好。</p>
+        </article>
+        <article class="card">
+          <h3>📶 快速切换网络</h3>
+          <p>在控制中心<strong>长按网络区域</strong>（飞行模式 / 数据 / Wi-Fi / 蓝牙四合一），可以展开看到更多选项，比如切换 Wi-Fi 网络或隔空投送设置。</p>
+        </article>
+        <article class="card">
+          <h3>🔄 批量选择</h3>
+          <p>在照片、文件或备忘录中，<strong>两根手指按住并滑动</strong>可以快速批量选择项目，比逐个点击快得多。</p>
+        </article>
+        <article class="card">
+          <h3>🔇 来电静音</h3>
+          <p>来电时按一下<strong>侧边按钮</strong>可以静音铃声但不拒接。按两下侧边按钮会拒接来电。不想接又不好意思直接挂断时很实用。</p>
+        </article>
+        <article class="card">
+          <h3>🔋 低电量模式</h3>
+          <p>「设置 > 电池 > 低电量模式」或控制中心添加此开关。开启后自动降低屏幕亮度、限制后台活动，可有效延长续航。</p>
+        </article>
+        <article class="card">
+          <h3>📋 复制粘贴跨设备</h3>
+          <p>在 iPhone 上复制文字，可以在旁边的 Mac 或 iPad 上直接粘贴（需同一 Apple ID 且开启蓝牙和 Wi-Fi）。这个功能叫「通用剪贴板」。</p>
         </article>
       </div>
     </section>
 
+    <!-- 页脚 -->
     <div class="footer">
-      <h2>学习建议</h2>
+      <h2>📚 学习建议</h2>
       <p>
-        第一天先练手势和电话微信，第二天学拍照、截图、下载应用，第三天检查备份和隐私。
-        不用一次记住全部功能，常用的动作重复几次就会变自然。
+        <strong>第一天</strong>：练习手势操作和打电话、发微信。<br>
+        <strong>第二天</strong>：学会拍照、截图、下载应用和隔空投送。<br>
+        <strong>第三天</strong>：检查备份设置、隐私权限和屏幕使用时间。<br><br>
+        不用一次性记住全部功能——常用的动作重复几次就会变自然。遇到问题随时回来搜索查找。
       </p>
     </div>
   </main>
+
+  <!-- 回到顶部 -->
+  <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">↑</button>
+
+  <!-- ============================================
+       JavaScript
+       ============================================ -->
+  <script>
+  (function() {
+    /* ---------- 暗黑模式 ---------- */
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+      try { localStorage.setItem('iphone-guide-theme', theme); } catch(e) {}
+    }
+
+    const saved = (function() {
+      try { return localStorage.getItem('iphone-guide-theme'); } catch(e) { return null; }
+    })();
+    if (saved === 'dark' || saved === 'light') {
+      setTheme(saved);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setTheme('dark');
+    }
+
+    themeToggle.addEventListener('click', function() {
+      setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
+    /* ---------- 阅读进度条 ---------- */
+    const progressBar = document.getElementById('progressBar');
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = Math.min(progress, 100) + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+
+    /* ---------- 回到顶部 ---------- */
+    const backToTop = document.getElementById('backToTop');
+    function toggleBackToTop() {
+      backToTop.classList.toggle('visible', window.scrollY > 350);
+    }
+    window.addEventListener('scroll', toggleBackToTop, { passive: true });
+    backToTop.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    /* ---------- 导航高亮 ---------- */
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections = [];
+    navLinks.forEach(function(a) {
+      var id = a.getAttribute('href');
+      if (id && id.startsWith('#')) {
+        var el = document.querySelector(id);
+        if (el) sections.push({ link: a, section: el });
+      }
+    });
+
+    var observerOptions = { rootMargin: '-80px 0px -50% 0px' };
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          navLinks.forEach(function(a) { a.classList.remove('active'); });
+          var match = sections.find(function(s) { return s.section === entry.target; });
+          if (match) match.link.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(function(s) { observer.observe(s.section); });
+
+    /* ---------- FAQ 手风琴 ---------- */
+    var accordionBtns = document.querySelectorAll('.accordion-btn');
+    accordionBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = btn.parentElement;
+        var isOpen = item.classList.contains('open');
+        // 关闭其他
+        document.querySelectorAll('.accordion-item.open').forEach(function(openItem) {
+          if (openItem !== item) {
+            openItem.classList.remove('open');
+            openItem.querySelector('.accordion-btn').setAttribute('aria-expanded', 'false');
+          }
+        });
+        // 切换当前
+        if (isOpen) {
+          item.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        } else {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    /* ---------- 搜索 ---------- */
+    var searchInput = document.getElementById('searchInput');
+    var searchClear = document.getElementById('searchClear');
+    var noResults = document.getElementById('noResults');
+    var allSections = document.querySelectorAll('main section');
+    var heroEl = document.querySelector('.hero');
+    var footerEl = document.querySelector('.footer');
+
+    // 清除之前的高亮
+    function clearHighlights() {
+      document.querySelectorAll('.search-highlight').forEach(function(el) {
+        var parent = el.parentNode;
+        parent.replaceChild(document.createTextNode(el.textContent), el);
+        if (parent.normalize) parent.normalize();
+      });
+    }
+
+    // 高亮关键词
+    function highlightText(root, keyword) {
+      if (!root || !keyword) return;
+      var walker = document.createTreeWalker(
+        root,
+        NodeFilter.SHOW_TEXT,
+        {
+          acceptNode: function(node) {
+            if (node.parentElement &&
+                (node.parentElement.tagName === 'SCRIPT' ||
+                 node.parentElement.tagName === 'STYLE' ||
+                 node.parentElement.tagName === 'INPUT' ||
+                 node.parentElement.classList.contains('search-highlight'))) {
+              return NodeFilter.FILTER_REJECT;
+            }
+            return NodeFilter.FILTER_ACCEPT;
+          }
+        }
+      );
+      var nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+
+      var regex = new RegExp('(' + keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+      nodes.forEach(function(textNode) {
+        var text = textNode.textContent;
+        if (regex.test(text)) {
+          regex.lastIndex = 0;
+          var frag = document.createDocumentFragment();
+          var lastIdx = 0;
+          var match;
+          while ((match = regex.exec(text)) !== null) {
+            if (match.index > lastIdx) {
+              frag.appendChild(document.createTextNode(text.slice(lastIdx, match.index)));
+            }
+            var mark = document.createElement('mark');
+            mark.className = 'search-highlight';
+            mark.textContent = match[0];
+            frag.appendChild(mark);
+            lastIdx = match.index + match[0].length;
+          }
+          if (lastIdx < text.length) {
+            frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+          }
+          textNode.parentNode.replaceChild(frag, textNode);
+        }
+      });
+    }
+
+    function doSearch() {
+      clearHighlights();
+      var query = searchInput.value.trim().toLowerCase();
+
+      if (query.length > 0) {
+        searchClear.classList.add('visible');
+      } else {
+        searchClear.classList.remove('visible');
+      }
+
+      if (query.length < 1) {
+        // 无搜索词：全部显示
+        allSections.forEach(function(s) { s.style.display = ''; });
+        heroEl.style.display = '';
+        footerEl.style.display = '';
+        noResults.classList.remove('visible');
+        return;
+      }
+
+      var foundAny = false;
+
+      allSections.forEach(function(section) {
+        var text = section.textContent.toLowerCase();
+        // 也检查标题
+        var headings = section.querySelectorAll('h2, h3');
+        var headingMatch = false;
+        headings.forEach(function(h) {
+          if (h.textContent.toLowerCase().indexOf(query) !== -1) headingMatch = true;
+        });
+
+        if (text.indexOf(query) !== -1 || headingMatch) {
+          section.style.display = '';
+          // 高亮（只在该 section 内）
+          highlightText(section, query);
+          foundAny = true;
+          // 展开该区域内的手风琴
+          section.querySelectorAll('.accordion-item').forEach(function(item) {
+            if (item.textContent.toLowerCase().indexOf(query) !== -1) {
+              item.classList.add('open');
+              item.querySelector('.accordion-btn').setAttribute('aria-expanded', 'true');
+            }
+          });
+        } else {
+          section.style.display = 'none';
+        }
+      });
+
+      // Hero 和页脚不隐藏但也不高亮
+      heroEl.style.display = '';
+      footerEl.style.display = '';
+
+      if (!foundAny) {
+        noResults.classList.add('visible');
+      } else {
+        noResults.classList.remove('visible');
+      }
+    }
+
+    searchInput.addEventListener('input', function() {
+      doSearch();
+    });
+
+    searchClear.addEventListener('click', function() {
+      searchInput.value = '';
+      clearHighlights();
+      allSections.forEach(function(s) { s.style.display = ''; });
+      heroEl.style.display = '';
+      footerEl.style.display = '';
+      noResults.classList.remove('visible');
+      searchClear.classList.remove('visible');
+      // 关闭所有手风琴
+      document.querySelectorAll('.accordion-item.open').forEach(function(item) {
+        item.classList.remove('open');
+        item.querySelector('.accordion-btn').setAttribute('aria-expanded', 'false');
+      });
+      searchInput.focus();
+    });
+
+    // ESC 清除搜索
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        searchClear.click();
+      }
+    });
+
+    /* ---------- 滚动动画（简单的进入视口动画）---------- */
+    var animateObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          animateObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.card, .step, .accordion-item').forEach(function(el) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(18px)';
+      el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+      animateObserver.observe(el);
+    });
+
+    /* ---------- 键盘导航优化 ---------- */
+    document.addEventListener('keydown', function(e) {
+      // Ctrl+K / Cmd+K 聚焦搜索
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      }
+    });
+
+  })();
+  </script>
 </body>
 </html>
